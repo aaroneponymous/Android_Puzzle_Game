@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/playGameFragment">
+
+    <fragment
+        android:id="@+id/configFragment"
+        android:name="com.apaul9.myapplication.ui.configuration.ConfigFragment"
+        android:label="fragment_config"
+        tools:layout="@layout/fragment_config" >
+        <action
+            android:id="@+id/action_configFragment_to_playGameFragment"
+            app:destination="@id/playGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.apaul9.myapplication.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/statisticsFragment2"
+        android:name="com.apaul9.myapplication.ui.statistics.StatisticsFragment"
+        android:label="fragment_statistics"
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_statisticsFragment2_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.apaul9.myapplication.ui.welcome.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_configFragment"
+            app:destination="@id/configFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_statisticsFragment2"
+            app:destination="@id/statisticsFragment2" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playGameFragment"
+        android:name="com.apaul9.myapplication.ui.playgame.PlayGameFragment"
+        android:label="fragment_play_game"
+        tools:layout="@layout/fragment_play_game" >
+        <action
+            android:id="@+id/action_playGameFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
+</navigation>
