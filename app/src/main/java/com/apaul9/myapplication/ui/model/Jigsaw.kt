@@ -7,11 +7,18 @@ import android.widget.ImageView
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class Jigsaw {
+class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
 
+    private val imageView: ImageView = imageView
+    private val piecesNumber: Int = piecesNumber
+    private val rows: Int = rows
+    private val cols: Int = cols
+
+
+    // TODO: Change this for a general purpose function
+    // TODO: HARD MODE, MEDIUM MODE & EASY MODE
     // SplitImage takes an ImageView and returns an ArrayList of Bitmaps
-    private fun splitImage(imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int):
-            ArrayList<Bitmap> {
+    fun splitImage():ArrayList<Bitmap> {
 
         val pieces: ArrayList<Bitmap> = ArrayList(piecesNumber)
 
@@ -54,8 +61,8 @@ class Jigsaw {
         return pieces
     }
 
-    // Calculating the scaled Dimensions and Positions of the Pieces
-    // Setting them into the ImageView
+    // Calculates the scaled Dimensions and Positions of the Pieces
+    // And Sets them into ImageView
     private fun getBitPosInImageView(imageView: ImageView?): IntArray? {
         val ret = IntArray(4)
         if (imageView == null || imageView.drawable == null) return ret
