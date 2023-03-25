@@ -2,6 +2,7 @@ package com.apaul9.myapplication.ui.model
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.PointF
 import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
 import kotlin.math.abs
@@ -50,8 +51,7 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
         for (i in 0 until rows) {
             var xCoord = 0
             for (j in 0 until cols) {
-                pieces.add(
-                    Bitmap.createBitmap(croppedBitmap, xCoord, yCoord, pieceWidth,
+                pieces.add(Bitmap.createBitmap(croppedBitmap, xCoord, yCoord, pieceWidth,
                     pieceHeight))
                 xCoord += pieceWidth
             }
