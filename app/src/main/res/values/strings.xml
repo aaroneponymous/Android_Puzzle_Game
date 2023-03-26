@@ -7,4 +7,7 @@
     <string name="easy">EASY</string>
     <string name="medium">MEDIUM</string>
     <string name="hard">HARD</string>
+    <string name="time_remaining">Time Remaining:</string>
+    <string name="new_game">NEW GAME</string>
+    <string name="change_config">CONFIG</string>
 </resources>

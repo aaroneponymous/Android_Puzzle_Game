@@ -24,7 +24,6 @@ class ConfigFragment : Fragment() {
     private lateinit var recyclerScrollImage: RecyclerView
     private lateinit var prefs: SharedPreferences
     private lateinit var radioGroup: RadioGroup
-    private lateinit var bundle: Bundle
 
     private lateinit var easyModeButton: RadioButton
     private lateinit var mediumModeButton: RadioButton
