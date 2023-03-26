@@ -12,7 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.navGraphViewModels
 import com.apaul9.myapplication.R
+import com.apaul9.myapplication.ui.configuration.ConfigViewModel
 import com.apaul9.myapplication.ui.model.Jigsaw
 import com.apaul9.myapplication.ui.model.PiecesData
 import kotlin.math.*
@@ -26,9 +29,10 @@ class PlayGameFragment : Fragment() {
     private lateinit var puzzleFrameView: ImageView
     private lateinit var modelPuzzle: Jigsaw
     private lateinit var bitJigsawMap: Map<Int,PiecesData>
-//    private lateinit var boxshape: ImageButton
 
 
+
+    private val viewModel: ConfigViewModel by navGraphViewModels(R.id.nav_graph)
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -36,17 +40,40 @@ class PlayGameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_play_game, container, false)
         prefs = PreferenceManager.getDefaultSharedPreferences(view.context)
         puzzleFrameView = view.findViewById(R.id.puzzle_imageView)
 
+        var piecesNo: Int
+        var rowsNo: Int
+        var colsNo: Int
 
 
-        modelPuzzle = Jigsaw(puzzleFrameView, 12, 4, 3)
+        if (viewModel.modeSelection.value.equals("easy")) {
+            piecesNo = 12
+            rowsNo = 4
+            colsNo = 3
+        }
+        else if (viewModel.modeSelection.value.equals("medium")) {
+            piecesNo = 24
+            rowsNo = 6
+            colsNo = 4
+        }
+        else {
+            piecesNo = 36
+            rowsNo = 6
+            colsNo = 6
+        }
+
+        puzzleFrameView.setImageResource(viewModel.imageSelection.value!!)
+
+
+        modelPuzzle = Jigsaw(puzzleFrameView, piecesNo, rowsNo, colsNo)
         // Calculate Dimension after the View is created
         puzzleFrameView.post {
-            val modelSplitPair = modelPuzzle.splitImage(puzzleFrameView, 12, 4, 3)
+            val modelSplitPair = modelPuzzle.splitImage(puzzleFrameView, piecesNo, rowsNo,colsNo)
             jigsawPieces = modelSplitPair.first
             bitJigsawMap = modelSplitPair.second
             // Set visibility of the actual image to GONE
@@ -97,10 +124,6 @@ class PlayGameFragment : Fragment() {
                 (view as ViewGroup).addView(puzzleView)
             }
         }
-
-
-
-
         return view
     }
 

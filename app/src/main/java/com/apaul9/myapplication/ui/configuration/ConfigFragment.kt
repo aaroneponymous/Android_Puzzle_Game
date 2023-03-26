@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apaul9.myapplication.R
@@ -20,15 +20,16 @@ import com.apaul9.myapplication.R
 
 class ConfigFragment : Fragment() {
 
+    private val viewModel: ConfigViewModel by navGraphViewModels(R.id.nav_graph)
     private lateinit var recyclerScrollImage: RecyclerView
     private lateinit var prefs: SharedPreferences
     private lateinit var radioGroup: RadioGroup
-    private lateinit var bundleToPlay: Bundle
-    private var modeChecked = false
+    private lateinit var bundle: Bundle
 
     private lateinit var easyModeButton: RadioButton
     private lateinit var mediumModeButton: RadioButton
     private lateinit var hardModeButton: RadioButton
+    private var modeChecked = false
 
 
 
@@ -44,39 +45,29 @@ class ConfigFragment : Fragment() {
     ):
             View? {
         val view = inflater.inflate(R.layout.fragment_config, container, false)
-        val radioGroup = view.findViewById<RadioGroup>(R.id.difficulty_radioButton)
-        val easyModeButton = view.findViewById<RadioButton>(R.id.easy_radioButton)
-        val mediumModeButton = view.findViewById<RadioButton>(R.id.medium_radioButton)
-        val hardModeButton = view.findViewById<RadioButton>(R.id.hard_radioButton)
-
-        bundleToPlay = Bundle()
+        radioGroup = view.findViewById(R.id.difficulty_radioButton)
+        easyModeButton = view.findViewById(R.id.easy_radioButton)
+        mediumModeButton = view.findViewById(R.id.medium_radioButton)
+        hardModeButton = view.findViewById(R.id.hard_radioButton)
 
 
-
-        radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton = view.findViewById(checkedId)
             when (radio.id) {
                 R.id.easy_radioButton -> {
-                    bundleToPlay.apply {
-                        putString("difficulty", "easy")
-                    }
+                    viewModel.setModeSelection("easy")
                     modeChecked = true
                 }
                 R.id.medium_radioButton -> {
-                    bundleToPlay.apply {
-                        putString("difficulty", "medium")
-                    }
+                    viewModel.setModeSelection("medium")
                     modeChecked = true
                 }
                 R.id.hard_radioButton -> {
-                    bundleToPlay.apply {
-                        putString("difficulty", "hard")
-                    }
+                    viewModel.setModeSelection("hard")
                     modeChecked = true
                 }
             }
         }
-        )
 
 
 
@@ -142,13 +133,10 @@ class ConfigFragment : Fragment() {
         override fun onClick(v: View?) {
             // Get the resource id of the image that was clicked
             val imageId = this.resourceId
-            bundleToPlay.apply{
-                putInt("imageId", imageId)
-            }
             if (modeChecked) {
-                v?.findNavController()?.navigate(R.id.action_configFragment_to_playGameFragment, bundleToPlay)
+                viewModel.setImageSelection(imageId)
+                v?.findNavController()?.navigate(R.id.action_configFragment_to_playGameFragment)
             }
-
 
         }
 

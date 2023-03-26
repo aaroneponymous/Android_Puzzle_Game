@@ -238,7 +238,4 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
         return ret
     }
 
-
-
-
 }
