@@ -26,6 +26,7 @@ class PlayGameFragment : Fragment() {
     private lateinit var puzzleFrameView: ImageView
     private lateinit var modelPuzzle: Jigsaw
     private lateinit var bitJigsawMap: Map<Int,PiecesData>
+//    private lateinit var boxshape: ImageButton
 
 
 
@@ -39,6 +40,9 @@ class PlayGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_play_game, container, false)
         prefs = PreferenceManager.getDefaultSharedPreferences(view.context)
         puzzleFrameView = view.findViewById(R.id.puzzle_imageView)
+
+
+
         modelPuzzle = Jigsaw(puzzleFrameView, 12, 4, 3)
         // Calculate Dimension after the View is created
         puzzleFrameView.post {
@@ -93,6 +97,10 @@ class PlayGameFragment : Fragment() {
                 (view as ViewGroup).addView(puzzleView)
             }
         }
+
+
+
+
         return view
     }
 

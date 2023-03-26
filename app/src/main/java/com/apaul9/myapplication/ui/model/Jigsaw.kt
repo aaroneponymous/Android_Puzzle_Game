@@ -11,10 +11,6 @@ import kotlin.math.sin
 
 class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
 
-    private val imageView: ImageView = imageView
-    private val piecesNumber: Int = piecesNumber
-    private val rows: Int = rows
-    private val cols: Int = cols
 
     // SplitImage takes an ImageView and returns an ArrayList of Bitmaps
     fun splitImage(imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int):
@@ -206,10 +202,7 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
         return Pair(pieces, bitImageMap)
     }
 
-
-
-    // Calculates the scaled Dimensions and Positions of the Pieces
-    // And Sets them into ImageView
+    // Calculate the scaled Dimensions and Positions of the Pieces
     private fun getBitPosInImageView(imageView: ImageView?): IntArray? {
         val ret = IntArray(4)
         if (imageView == null || imageView.drawable == null) return ret
@@ -244,4 +237,8 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
         ret[1] = top
         return ret
     }
+
+
+
+
 }

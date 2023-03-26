@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Jigsaw</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="configuration_title">Configuration</string>
+    <string name="difficult_level">Choose the Difficulty Level:</string>
+    <string name="choose_image">Play the Game by Tapping an Image:</string>
+    <string name="easy">EASY</string>
+    <string name="medium">MEDIUM</string>
+    <string name="hard">HARD</string>
 </resources>

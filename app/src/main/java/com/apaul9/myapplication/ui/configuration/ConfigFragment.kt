@@ -1,60 +1,184 @@
 package com.apaul9.myapplication.ui.configuration
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.cardview.widget.CardView
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.apaul9.myapplication.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ConfigFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class ConfigFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var recyclerScrollImage: RecyclerView
+    private lateinit var prefs: SharedPreferences
+    private lateinit var radioGroup: RadioGroup
+    private lateinit var bundleToPlay: Bundle
+    private var modeChecked = false
+
+    private lateinit var easyModeButton: RadioButton
+    private lateinit var mediumModeButton: RadioButton
+    private lateinit var hardModeButton: RadioButton
+
+
+
+
+    companion object {
+        fun newInstance() = ConfigFragment()
+        const val POSITION = "adapter_position"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_config, container, false)
-    }
+    ):
+            View? {
+        val view = inflater.inflate(R.layout.fragment_config, container, false)
+        val radioGroup = view.findViewById<RadioGroup>(R.id.difficulty_radioButton)
+        val easyModeButton = view.findViewById<RadioButton>(R.id.easy_radioButton)
+        val mediumModeButton = view.findViewById<RadioButton>(R.id.medium_radioButton)
+        val hardModeButton = view.findViewById<RadioButton>(R.id.hard_radioButton)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ConfigFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ConfigFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        bundleToPlay = Bundle()
+
+
+
+        radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            val radio: RadioButton = view.findViewById(checkedId)
+            when (radio.id) {
+                R.id.easy_radioButton -> {
+                    bundleToPlay.apply {
+                        putString("difficulty", "easy")
+                    }
+                    modeChecked = true
+                }
+                R.id.medium_radioButton -> {
+                    bundleToPlay.apply {
+                        putString("difficulty", "medium")
+                    }
+                    modeChecked = true
+                }
+                R.id.hard_radioButton -> {
+                    bundleToPlay.apply {
+                        putString("difficulty", "hard")
+                    }
+                    modeChecked = true
                 }
             }
+        }
+        )
+
+
+
+        recyclerScrollImage = view.findViewById(R.id.recyclerView)
+        recyclerScrollImage.layoutManager = LinearLayoutManager(activity)
+        recyclerScrollImage.adapter = ImageAdapter(getImageList())
+        prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerScrollImage.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // RecyclerView was not scrolled
+                    val viewHolder =
+                        recyclerView.findViewHolderForAdapterPosition(prefs.getInt(POSITION, 0))
+                    if (viewHolder != null) {
+                        (viewHolder as ImageViewHolder).setWasScrolled(false)
+                    }
+                } else {
+                    // RecyclerView was scrolled
+                    val viewHolder =
+                        recyclerView.findViewHolderForAdapterPosition(prefs.getInt(POSITION, 0))
+                    if (viewHolder != null) {
+                        (viewHolder as ImageViewHolder).setWasScrolled(true)
+                    }
+                }
+            }
+        })
+    }
+
+    // Write the position of the last scrolled item to shared preferences
+    override fun onPause() {
+        super.onPause()
+        val position =
+            (recyclerScrollImage.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        prefs.edit().putInt(POSITION, position).apply()
+    }
+
+    private fun getImageList(): List<Int> {
+        return listOf(
+            R.drawable.d3fern,
+            R.drawable.d1forest_path,
+            R.drawable.d2motorbike
+        )
+    }
+
+    private inner class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+
+        private var resourceId: Int = 0
+        private val imageSlider: CardView = view.findViewById(R.id.imageSlide_cardView)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            // Get the resource id of the image that was clicked
+            val imageId = this.resourceId
+            bundleToPlay.apply{
+                putInt("imageId", imageId)
+            }
+            if (modeChecked) {
+                v?.findNavController()?.navigate(R.id.action_configFragment_to_playGameFragment, bundleToPlay)
+            }
+
+
+        }
+
+        fun bind(resourceId: Int) {
+            this.resourceId = resourceId
+            // Bind Drawable resource to ImageView
+            imageSlider.setBackgroundResource(resourceId)
+        }
+
+        fun setWasScrolled(wasScrolled: Boolean) {
+            // Handle wasScrolled state
+        }
+    }
+
+    private inner class ImageAdapter(private val imageIds: List<Int>) :
+        RecyclerView.Adapter<ImageViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.imageslider, parent, false)
+            return ImageViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+            val imageId = imageIds[position]
+            holder.bind(imageId)
+        }
+
+        override fun getItemCount(): Int {
+            return imageIds.size
+        }
     }
 }
