@@ -1,9 +1,8 @@
 package com.apaul9.myapplication.ui.model
-
 import android.os.CountDownTimer
 
 
-class Timer(val totalTime: Long, val onTimerTick: (Long) -> Unit, val onTimerFinish: () -> Unit) {
+class Timer(private val totalTime: Long, val onTimerTick: (Long) -> Unit, val onTimerFinish: () -> Unit) {
     private var timeLeft = totalTime
     private var timer: CountDownTimer? = null
 

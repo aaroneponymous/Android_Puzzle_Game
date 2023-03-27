@@ -2,7 +2,6 @@ package com.apaul9.myapplication.ui.playgame
 
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
@@ -17,7 +16,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.navGraphViewModels
 import com.apaul9.myapplication.R
@@ -43,12 +41,10 @@ class PlayGameFragment : Fragment() {
     private lateinit var timerTextView: TextView
     private lateinit var winLoss: ImageView
     private lateinit var newGameBtn: Button
-    private lateinit var configBtn: Button
 
 
-
-
-    private val viewModel: ConfigViewModel by navGraphViewModels(R.id.nav_graph)
+    private val viewModelGameConfig: ConfigViewModel by navGraphViewModels(R.id.nav_graph)
+    private val viewModelGameStats: PlayGameViewModel by navGraphViewModels(R.id.nav_graph)
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -65,60 +61,21 @@ class PlayGameFragment : Fragment() {
         piecesContainer = view.findViewById(R.id.piecesContainer_imageView)
         winLoss = view.findViewById(R.id.winLoss_imageView)
         newGameBtn = view.findViewById(R.id.newGame_button)
-        configBtn = view.findViewById(R.id.configChange_button)
 
         // Set On Click Listeners for Buttons
         newGameBtn.setOnClickListener {
             // Navigate to the Configuration Fragment
             view.findNavController().navigate(R.id.action_playGameFragment_to_welcomeFragment)
         }
-        configBtn.setOnClickListener {
-            // Navigate to the Configuration Fragment
-            view.findNavController().navigate(R.id.action_playGameFragment_to_configFragment)
-        }
 
 
+        val gameDifficulty: String = viewModelGameConfig.modeSelection.value.toString()
 
-
-        val piecesNo: Int
-        val rowsNo: Int
-        val colsNo: Int
-        val gameDifficulty: String = viewModel.modeSelection.value.toString()
-
-        // Calculate the total time for the timer based on the game difficulty
-        val totalTime = when (gameDifficulty) {
-            "easy" -> 1 * 10 * 1000L // 4 minutes
-            "medium" -> 1 * 10 * 1000L // 3 minutes
-            else -> 1 * 10 * 1000L // 2 minutes
-        }
-
-
-        when (gameDifficulty) {
-            "easy" -> {
-                piecesNo = 12
-                rowsNo = 4
-                colsNo = 3
-            }
-            "medium" -> {
-                piecesNo = 24
-                rowsNo = 6
-                colsNo = 4
-            }
-            else -> {
-                piecesNo = 36
-                rowsNo = 6
-                colsNo = 6
-            }
-        }
-
-
-        puzzleFrameView.setImageResource(viewModel.imageSelection.value!!)
-
-
-        modelPuzzle = Jigsaw(puzzleFrameView, piecesNo, rowsNo, colsNo)
+        puzzleFrameView.setImageResource(viewModelGameConfig.imageSelection.value!!)
+        modelPuzzle = Jigsaw(puzzleFrameView, gameDifficulty)
         // Calculate Dimension after the View is created
         puzzleFrameView.post {
-            val modelSplitPair = modelPuzzle.splitImage(puzzleFrameView, piecesNo, rowsNo,colsNo)
+            val modelSplitPair = modelPuzzle.splitImage()
             jigsawPieces = modelSplitPair.first
             bitJigsawMap = modelSplitPair.second
             // Set visibility of the actual image to GONE
@@ -132,8 +89,6 @@ class PlayGameFragment : Fragment() {
                 val randomY = Random().nextInt(piecesContainer.height - piece.height) + piecesContainer.top
                 puzzleView.x = randomX.toFloat()
                 puzzleView.y = randomY.toFloat()
-
-
 
                 puzzleView.setImageBitmap(piece)
                 puzzleView.setOnTouchListener { v, event ->
@@ -174,6 +129,10 @@ class PlayGameFragment : Fragment() {
                                     // Third: Check if all pieces are in their original position
                                     // If so, stop the timer and animate the win/loss image
                                     if (checkIfSolved()) {
+                                        // Update view model with the time remaining
+                                        viewModelGameStats.setQuicktimePlayed(timer.getTimeRemaining())
+                                        viewModelGameStats.setGamesWon()
+                                        viewModelGameStats.setGamesPlayed()
                                         timer.stop()
                                         winLoss.setImageResource(R.drawable.winpuzzle)
                                         animateWinLossImage(winLoss)
@@ -189,7 +148,7 @@ class PlayGameFragment : Fragment() {
                 (view as ViewGroup).addView(puzzleView)
 
                 // Create the timer with the total time and callbacks
-                timer = Timer(totalTime, { _ ->
+                timer = Timer(modelPuzzle.getTime(gameDifficulty), { _ ->
                         val (minutes, seconds) = timer.getTimeRemaining()
                         timerTextView.text = "%02d:%02d".format(minutes, seconds)
                     }, { // Timer finished, disable piece dragging here
@@ -199,12 +158,15 @@ class PlayGameFragment : Fragment() {
                                 originalPosition.canDrag = false
                             }
                         }
-                        // Change the color of the timer to red
-                        timerTextView.setTextColor(Color.RED)
-                        // Animate the win/loss image
-                        winLoss.setImageResource(R.drawable.ranout)
-                        animateWinLossImage(winLoss)
-                        newGameBtn.visibility = View.VISIBLE
+
+                    viewModelGameStats.setGamesLost()
+                    viewModelGameStats.setGamesPlayed()
+                    // Change the color of the timer to red
+                    timerTextView.setTextColor(Color.RED)
+                    // Animate the win/loss image
+                    winLoss.setImageResource(R.drawable.ranout)
+                    animateWinLossImage(winLoss)
+                    newGameBtn.visibility = View.VISIBLE
                     })
 
                 // Start the timer
@@ -257,8 +219,6 @@ class PlayGameFragment : Fragment() {
         })
 
     }
-
-
 
     companion object {
     }

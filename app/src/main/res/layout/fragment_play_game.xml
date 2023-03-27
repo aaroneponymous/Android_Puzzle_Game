@@ -108,18 +108,6 @@
         app:layout_constraintVertical_bias="0.986" />
 
     <Button
-        android:id="@+id/configChange_button"
-        android:layout_width="126dp"
-        android:layout_height="49dp"
-        android:text="@string/change_config"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.586" />
-
-    <Button
         android:id="@+id/newGame_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -127,10 +115,9 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.945"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.585" />
+        app:layout_constraintVertical_bias="0.59" />
 
     <ImageView
         android:id="@+id/winLoss_imageView"

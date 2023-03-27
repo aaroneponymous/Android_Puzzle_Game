@@ -9,20 +9,47 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 
-class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
+class Jigsaw (imageView: ImageView, gameMode: String) {
 
+
+    private var imageChosen: ImageView = imageView
+    private var gameMode: String = gameMode
+
+    // Implement a function that takes in game difficulty and returns the number of pieces
+    // and the number of rows and columns as a Triple
+    private fun getDifficulty(difficulty: String): Triple<Int, Int, Int> {
+        return when (difficulty) {
+            "easy" -> Triple(20, 5, 4)
+            "medium" -> Triple(30, 6, 5)
+            else -> Triple(42, 7, 6)
+        }
+    }
+
+    // Implement a function that returns time in milliseconds for the game
+    fun getTime(difficulty: String): Long {
+        return when (difficulty) {
+            "easy" -> 1 * 60 * 1000L // 4 minutes
+            "medium" -> 1 * 60 * 1000L // 3 minutes
+            else -> 1 * 60 * 1000L // 2 minutes
+        }
+    }
 
     // SplitImage takes an ImageView and returns an ArrayList of Bitmaps
-    fun splitImage(imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int):
-            Pair<ArrayList<Bitmap>, MutableMap<Int, PiecesData>> {
+    fun splitImage(): Pair<ArrayList<Bitmap>, MutableMap<Int, PiecesData>> {
+        // Create a Triple int of the number of pieces, rows, and columns
+        val difficulty = getDifficulty(gameMode)
+        val piecesNumber = difficulty.first
+        val rows = difficulty.second
+        val columns = difficulty.third
+
 
         val pieces: ArrayList<Bitmap> = ArrayList(piecesNumber)
 
         // Get the scaled bitmap of the source image
-        val drawable = imageView.drawable as BitmapDrawable
+        val drawable = imageChosen.drawable as BitmapDrawable
         val bitmap = drawable.bitmap
 
-        val dimension = getBitPosInImageView(imageView)
+        val dimension = getBitPosInImageView(imageChosen)
         val scaledBitmapLeft = dimension!![0]
         val scaledBitmapTop = dimension!![1]
         val scaledBitmapWidth = dimension!![2]
@@ -38,7 +65,7 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
 
 
         // Calculate the width and height of the pieces
-        val pieceWidth = croppedImageWidth / cols
+        val pieceWidth = croppedImageWidth / columns
         val pieceHeight = croppedImageHeight/ rows
         // create a Map of the Bitmaps and their Positions
         val bitImageMap = mutableMapOf<Int, PiecesData>()
@@ -47,7 +74,7 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
         var yCoord = 0
         for (r in 0 until rows) {
             var xCoord = 0
-            for (c in 0 until cols) {
+            for (c in 0 until columns) {
                 // calculate offset for each piece
                 // calculate offset for each piece
                 var offsetX = 0
@@ -62,8 +89,8 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
                     yCoord - offsetY, pieceWidth + offsetX, pieceHeight + offsetY)
 
                 // Adjust the pieces position values to the bounds of the ImageView
-                val xBoundedCoord = xCoord - offsetX + imageView.left
-                val yBoundedCoord = yCoord - offsetY + imageView.top
+                val xBoundedCoord = xCoord - offsetX + imageChosen.left
+                val yBoundedCoord = yCoord - offsetY + imageChosen.top
                 val pieceWidthOffSet = pieceWidth + offsetX
                 val pieceHeightOffSet = pieceHeight + offsetY
 
@@ -89,7 +116,7 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
                     path.lineTo(jigsawPiece.width.toFloat(), offsetY.toFloat())
                 }
 
-                if (c == cols - 1) {
+                if (c == columns - 1) {
                     // right side piece
                     path.lineTo(jigsawPiece.width.toFloat(), jigsawPiece.height.toFloat());
                 } else {
@@ -143,8 +170,8 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
                     sin(Math.toRadians(lightAngle.toDouble())).toFloat().toInt()
                 ) // direction vector of light source
                 val normal = Point(
-                    (-(offsetY + jigsawPiece.height / 2 - imageView.height / 2).toFloat()).toInt(),
-                    (offsetX + jigsawPiece.width / 2 - imageView.width / 2).toFloat().toInt()
+                    (-(offsetY + jigsawPiece.height / 2 - imageChosen.height / 2).toFloat()).toInt(),
+                    (offsetX + jigsawPiece.width / 2 - imageChosen.width / 2).toFloat().toInt()
                 ) // normal vector of piece
                 val dotProduct = lightDir.x * normal.x + lightDir.y * normal.y // dot product of direction and normal
                 if (dotProduct > 0) {
@@ -177,8 +204,8 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
                     sin(Math.toRadians(lightAngle.toDouble())).toFloat().toInt()
                 ) // direction vector of light source
                 val normal1 = Point(
-                    (-(offsetY + jigsawPiece.height / 2 - imageView.height / 2).toFloat()).toInt(),
-                    (offsetX + jigsawPiece.width / 2 - imageView.width / 2).toFloat().toInt()
+                    (-(offsetY + jigsawPiece.height / 2 - imageChosen.height / 2).toFloat()).toInt(),
+                    (offsetX + jigsawPiece.width / 2 - imageChosen.width / 2).toFloat().toInt()
                 ) // normal vector of piece
                 val dotProduct1 = lightDir.x * normal.x + lightDir.y * normal.y // dot product of direction and normal
                 if (dotProduct < 0) {
@@ -237,5 +264,4 @@ class Jigsaw (imageView: ImageView, piecesNumber: Int, rows: Int, cols: Int) {
         ret[1] = top
         return ret
     }
-
 }

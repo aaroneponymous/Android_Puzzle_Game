@@ -29,6 +29,7 @@ tools:context=".ui.welcome.WelcomeFragment">
         android:layout_height="92dp"
         android:background="@color/gray_background"
         android:src="@drawable/play_button_shape"
+        android:visibility="invisible"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,6 +44,7 @@ tools:context=".ui.welcome.WelcomeFragment">
         android:layout_marginBottom="54dp"
         android:background="@color/gray_background"
         android:src="@drawable/game_settings"
+        android:visibility="invisible"
 
         app:layout_constraintBottom_toTopOf="@+id/logo_imageView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,10 +59,10 @@ tools:context=".ui.welcome.WelcomeFragment">
         android:layout_height="92dp"
         android:layout_marginBottom="54dp"
         android:background="@color/gray_background"
-
         android:src="@drawable/game_statistics"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/logo_imageView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/settingsBtn_imageButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

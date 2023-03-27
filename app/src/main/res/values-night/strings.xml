@@ -10,4 +10,11 @@
     <string name="time_remaining">Time Remaining:</string>
     <string name="new_game">NEW GAME</string>
     <string name="change_config">CONFIG</string>
+    <string name="settings_title">Settings</string>
+    <string name="music_settings">Music On/Off</string>
+    <string name="music_on">On</string>
+    <string name="music_off">Off</string>
+    <string name="font_settings">Font</string>
+    <string name="large_font">Large</string>
+    <string name="small_font">Small</string>
 </resources>

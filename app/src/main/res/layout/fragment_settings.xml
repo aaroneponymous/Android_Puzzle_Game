@@ -4,62 +4,133 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_background"
-    android:hapticFeedbackEnabled="false"
+    android:background="@drawable/background_canvas"
+    android:hapticFeedbackEnabled="true"
     tools:context=".ui.settings.SettingsFragment">
 
-        <ImageButton
-            android:id="@+id/playBtn_imageButton"
-            android:layout_width="85dp"
-            android:layout_height="92dp"
-            android:background="@color/gray_background"
-            android:src="@drawable/play_button_shape"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/logo_imageView"
-            app:layout_constraintVertical_bias="0.602" />
+    <TextView
+        android:id="@+id/fontSelection_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/font_settings"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/music_radioButton" />
 
-        <ImageView
-            android:id="@+id/logo_imageView"
-            android:layout_width="410dp"
-            android:layout_height="370dp"
-            android:layout_marginTop="144dp"
-            android:layout_marginBottom="215dp"
-            android:src="@drawable/jigsaw_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+    <RadioGroup
+        android:id="@+id/music_radioButton"
+        android:layout_width="335dp"
+        android:layout_height="145dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicSelection_textview"
+        app:layout_constraintVertical_bias="0.0">
 
-        <ImageButton
-            android:id="@+id/settingsBtn_imageButton"
-            android:layout_width="85dp"
-            android:layout_height="92dp"
-            android:layout_marginBottom="54dp"
-            android:background="@color/gray_background"
-            android:src="@drawable/game_settings"
-            app:layout_constraintBottom_toTopOf="@+id/logo_imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+        <RadioButton
+            android:id="@+id/on_radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/music_on"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="392dp" />
 
-        <ImageButton
-            android:id="@+id/statisticsBtn_imageButton"
-            android:layout_width="85dp"
-            android:layout_height="92dp"
-            android:layout_marginBottom="54dp"
-            android:background="@color/gray_background"
-            android:src="@drawable/game_statistics"
-            app:layout_constraintBottom_toTopOf="@+id/logo_imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+        <RadioButton
+            android:id="@+id/off_radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/music_off"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="392dp" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/settingsTitle_textView"
+        android:layout_width="386dp"
+        android:layout_height="63dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:gravity="center"
+        android:text="@string/settings_title"
+        android:textAlignment="center"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/musicSelection_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/music_settings"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle_textView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RadioGroup
+        android:id="@+id/font_radioButton"
+        android:layout_width="338dp"
+        android:layout_height="145dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fontSelection_textview"
+        app:layout_constraintVertical_bias="0.0" >
+
+        <RadioButton
+            android:id="@+id/smallFont_radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/small_font"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="392dp" />
+
+        <RadioButton
+            android:id="@+id/largeFont_radioButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/large_font"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="392dp" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

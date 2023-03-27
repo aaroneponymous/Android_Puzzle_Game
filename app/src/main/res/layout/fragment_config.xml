@@ -11,7 +11,7 @@
     <!-- Image selection section -->
 
     <TextView
-        android:id="@+id/configTitle_textView"
+        android:id="@+id/settingsTitle_textView"
         android:layout_width="386dp"
         android:layout_height="63dp"
         android:fontFamily="sans-serif-condensed-light"
@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/difficultySelection_textview"
+        android:id="@+id/musicSelection_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/configTitle_textView"
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle_textView"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -64,21 +64,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/difficulty_radioButton" />
+        app:layout_constraintTop_toBottomOf="@+id/music_radioButton" />
 
     <RadioGroup
-        android:id="@+id/difficulty_radioButton"
+        android:id="@+id/music_radioButton"
         android:layout_width="335dp"
         android:layout_height="145dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/configTitle_textView"
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle_textView"
         app:layout_constraintVertical_bias="0.068">
 
         <RadioButton
-            android:id="@+id/easy_radioButton"
+            android:id="@+id/on_radioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
@@ -89,7 +89,7 @@
             tools:layout_editor_absoluteY="392dp" />
 
         <RadioButton
-            android:id="@+id/medium_radioButton"
+            android:id="@+id/off_radioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"

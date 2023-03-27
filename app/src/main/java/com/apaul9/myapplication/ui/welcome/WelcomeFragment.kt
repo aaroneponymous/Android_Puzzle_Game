@@ -51,39 +51,14 @@ class WelcomeFragment : Fragment() {
 
         // Initialize the Welcome Animation Elements
         welcomeAnimImage = view.findViewById(R.id.welcome_imageView)
-        jigsawAnimModel = Jigsaw(welcomeAnimImage, 56, 8, 7)
+        jigsawAnimModel = Jigsaw(welcomeAnimImage, "None")
 
         // Calculate Dimension after the View is created
-        welcomeAnimImage.post {
-            val modelSplitPair = jigsawAnimModel.splitImage(welcomeAnimImage, 56, 8, 7)
-            val jigsawPieces = modelSplitPair.first
-            bitJigsawMap = modelSplitPair.second
-            // Set visibility of the actual image to GONE
-            welcomeAnimImage.visibility = View.GONE
-            val viewPuzzles = view as ViewGroup
-            animatePuzzlePieces(jigsawPieces, bitJigsawMap as HashMap<Int, PiecesData>, view)
-
-        }
-
-        // Make the Welcome Animation Pieces Disappear
-        Handler().postDelayed({
-            val viewPuzzles = view as ViewGroup
-            for (i in 0 until viewPuzzles.childCount) {
-                val child = viewPuzzles.getChildAt(i)
-                if (child is ImageView) {
-                    child.animate().alpha(0f).setDuration(2000).start()
-                }
-            }
-        }, 500)
-
+        puzzlePiecesMaker()
+        puzzleAnimDisappear()
         // Make the other UI Elements Appear
-        Handler().postDelayed({
-            statsButton.animate().alpha(1f).setDuration(1000).start()
-            settings.animate().alpha(1f).setDuration(1000).start()
-            playButton.animate().alpha(1f).setDuration(1000).start()
-            logoImage.visibility = View.VISIBLE
-            logoImage.animate().alpha(1f).setDuration(1000).start()
-        }, 800)
+        uiAppear()
+
 
         // Set the OnClickListeners for the UI Elements
         statsButton.setOnClickListener {
@@ -101,50 +76,67 @@ class WelcomeFragment : Fragment() {
         return view
     }
 
-    private fun animatePuzzlePieces(jigsawPieces: List<Bitmap>, bitJigsawMap: HashMap<Int, PiecesData>, container: ViewGroup) {
-        val animators = mutableListOf<Animator>()
 
+    private fun animatePuzzlePieces(jigsawPieces: List<Bitmap>, bitJigsawMap: HashMap<Int, PiecesData>, container: ViewGroup) {
         for (piece in jigsawPieces) {
             val originalPosition = bitJigsawMap[piece.hashCode()]
-
             if (originalPosition != null) {
                 val puzzleView = ImageView(requireContext())
                 puzzleView.setImageBitmap(piece)
                 container.addView(puzzleView)
-
                 val x = originalPosition.xCoord.toFloat()
                 val y = originalPosition.yCoord.toFloat()
-
                 puzzleView.x = x
                 puzzleView.y = y
-
-                val animatorX = ObjectAnimator.ofFloat(
-                    puzzleView, "x", x
-                )
-                val animatorY = ObjectAnimator.ofFloat(
-                    puzzleView,
-                    "y",
-                    y
-                )
-
-                animators.add(animatorX)
-                animators.add(animatorY)
+                val animatorX = ObjectAnimator.ofFloat(puzzleView, "x", x)
+                val animatorY = ObjectAnimator.ofFloat(puzzleView, "y", y)
+                val animatorSet = AnimatorSet()
+                animatorSet.playTogether(animatorX, animatorY)
+                animatorSet.duration = 500
+                animatorSet.startDelay = jigsawPieces.indexOf(piece) * 50L
+                animatorSet.start()
             }
         }
-
-        Handler().postDelayed({
-            val animatorSet = AnimatorSet()
-            animatorSet.playTogether(animators)
-            animatorSet.duration = 10000
-            animatorSet.start()
-            animatorSet.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    Log.d("Animation", "Animation ended")
-                }
-            })
-        }, 1000)
     }
 
+    private fun puzzlePiecesMaker () {
+        welcomeAnimImage.post {
+            val modelSplitPair = jigsawAnimModel.splitImage()
+            val jigsawPieces = modelSplitPair.first
+            bitJigsawMap = modelSplitPair.second
+            // Set visibility of the actual image to GONE
+            welcomeAnimImage.visibility = View.GONE
+            val viewPuzzles = view as ViewGroup
+            animatePuzzlePieces(jigsawPieces, bitJigsawMap as HashMap<Int, PiecesData>, viewPuzzles)
+
+        }
+    }
+
+    private fun puzzleAnimDisappear() {
+        // Make the Welcome Animation Pieces Disappear
+        Handler().postDelayed({
+            val viewPuzzles = view as ViewGroup
+            for (i in 0 until viewPuzzles.childCount) {
+                val child = viewPuzzles.getChildAt(i)
+                if (child is ImageView) {
+                    child.animate().alpha(0f).setDuration(2000).start()
+                }
+            }
+        }, 500)
+    }
+
+    private fun uiAppear() {
+        Handler().postDelayed({
+            statsButton.visibility = View.VISIBLE
+            statsButton.animate().alpha(1f).setDuration(1000).start()
+            settings.visibility = View.VISIBLE
+            settings.animate().alpha(1f).setDuration(1000).start()
+            playButton.visibility = View.VISIBLE
+            playButton.animate().alpha(1f).setDuration(1000).start()
+            logoImage.visibility = View.VISIBLE
+            logoImage.animate().alpha(1f).setDuration(1000).start()
+        }, 800)
+    }
 
     companion object {
     }

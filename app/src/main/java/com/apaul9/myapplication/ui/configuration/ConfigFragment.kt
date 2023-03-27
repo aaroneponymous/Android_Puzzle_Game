@@ -44,20 +44,20 @@ class ConfigFragment : Fragment() {
     ):
             View? {
         val view = inflater.inflate(R.layout.fragment_config, container, false)
-        radioGroup = view.findViewById(R.id.difficulty_radioButton)
-        easyModeButton = view.findViewById(R.id.easy_radioButton)
-        mediumModeButton = view.findViewById(R.id.medium_radioButton)
+        radioGroup = view.findViewById(R.id.music_radioButton)
+        easyModeButton = view.findViewById(R.id.on_radioButton)
+        mediumModeButton = view.findViewById(R.id.off_radioButton)
         hardModeButton = view.findViewById(R.id.hard_radioButton)
 
 
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton = view.findViewById(checkedId)
             when (radio.id) {
-                R.id.easy_radioButton -> {
+                R.id.on_radioButton -> {
                     viewModel.setModeSelection("easy")
                     modeChecked = true
                 }
-                R.id.medium_radioButton -> {
+                R.id.off_radioButton -> {
                     viewModel.setModeSelection("medium")
                     modeChecked = true
                 }
