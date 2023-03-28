@@ -15,7 +15,7 @@ import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apaul9.myapplication.R
-
+import com.apaul9.myapplication.ui.playgame.PlayGameViewModel
 
 
 class ConfigFragment : Fragment() {
@@ -28,6 +28,7 @@ class ConfigFragment : Fragment() {
     private lateinit var easyModeButton: RadioButton
     private lateinit var mediumModeButton: RadioButton
     private lateinit var hardModeButton: RadioButton
+    private lateinit var gameStats: PlayGameViewModel
     private var modeChecked = false
 
 

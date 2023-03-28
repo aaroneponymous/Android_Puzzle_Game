@@ -17,4 +17,12 @@
     <string name="font_settings">Font</string>
     <string name="large_font">Large</string>
     <string name="small_font">Small</string>
+    <string name="stats_title">Statistics</string>
+    <string name="quickest_time">Quickest Time</string>
+    <string name="games_played">Games Played</string>
+    <string name="games_won">Games Won</string>
+    <string name="games_loss">Games Lost</string>
+    <string name="reset">Reset</string>
+    <string name="none">None</string>
+    <string name="zero">0</string>
 </resources>

@@ -1,0 +1,35 @@
+Write a detailed readme on my Jigsaw Android Game
+
+Code Fragments:
+1. WelcomeFragment
+2. SettingsFragment
+3. StatisticsFragment: Use PlayGameViewModel to get the statistics
+4. ConfigFragment: Use ConfigViewModel to pass the data to the GameFragment
+5. GameFragment: Use ConfigViewModel to get the data from the ConfigFragment
+                 Adds game statistics to PlayGameViewModel used by StatisticsFragment
+
+WelcomeFragment: This fragment is the first fragment that is displayed when the app is launched.
+It contains a play button that leads to the configuration fragment. It also contains a settings and
+a statistics button that leads to the settings and statistics fragment respectively.
+
+SettingsFragment: This fragment is used to change the settings of the app. The user can change
+the music on/off and the font size.
+
+StatisticsFragment: This fragment is used to display the statistics of the game. The statistics
+show the quickest time to solve a puzzle and the total number of games played, won and lost.
+
+ConfigFragment: This fragment is used to configure the game. The user can choose the level of
+difficulty and the image to be used for the game. The image can be selected from the recycler view
+and the game difficulty also defines the number of pieces and the time limit for the game.
+
+GameFragment: This fragment is used to play the game. The user can drag and drop the pieces to
+complete the puzzle.
+
+For each piece, upon ActionUp event, the piece is checked to see if it is in the correct position,
+using a hashmap. If the piece is in the correct position, the piece is locked in place using a snap
+in animation. If the piece is not in the correct position, the piece is
+
+The game ends when the user completes the puzzle or when the time limit
+expires. The game statistics are added to the PlayGameViewModel which is used by the statistics
+fragment to display the statistics.
+

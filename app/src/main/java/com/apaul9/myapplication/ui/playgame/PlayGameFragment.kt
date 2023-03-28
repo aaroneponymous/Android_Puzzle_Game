@@ -2,6 +2,7 @@ package com.apaul9.myapplication.ui.playgame
 
 
 import android.animation.Animator
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
@@ -45,6 +46,9 @@ class PlayGameFragment : Fragment() {
 
     private val viewModelGameConfig: ConfigViewModel by navGraphViewModels(R.id.nav_graph)
     private val viewModelGameStats: PlayGameViewModel by navGraphViewModels(R.id.nav_graph)
+
+
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -129,15 +133,31 @@ class PlayGameFragment : Fragment() {
                                     // Third: Check if all pieces are in their original position
                                     // If so, stop the timer and animate the win/loss image
                                     if (checkIfSolved()) {
-                                        // Update view model with the time remaining
-                                        viewModelGameStats.setQuicktimePlayed(timer.getTimeRemaining())
-                                        viewModelGameStats.setGamesWon()
-                                        viewModelGameStats.setGamesPlayed()
+                                        viewModelGameStats.setQuicktimePlayed(modelPuzzle.getTime(gameDifficulty)-timer.getTimeLeft())
+
+                                        if (viewModelGameStats.gamesWon.value == null) {
+                                            viewModelGameStats.setGamesWon(1)
+                                        } else {
+                                            val gamesWon = viewModelGameStats.gamesWon.value
+                                            viewModelGameStats.setGamesWon(gamesWon?.plus(1) ?: 0)
+
+                                        }
+
+                                        if (viewModelGameStats.gamesPlayed.value == null) {
+                                            viewModelGameStats.setGamesPlayed(1)
+                                        } else {
+                                            val gamesPlayed = viewModelGameStats.gamesPlayed.value
+                                            viewModelGameStats.setGamesPlayed(gamesPlayed?.plus(1) ?: 0)
+                                        }
                                         timer.stop()
                                         winLoss.setImageResource(R.drawable.winpuzzle)
                                         animateWinLossImage(winLoss)
                                         newGameBtn.visibility = View.VISIBLE
                                     }
+                                } // and if not in the threshold place piece animates back to the position it was dragged from
+                                else {
+                                    v.animate().x(randomX.toFloat()).y(randomY.toFloat())
+                                        .setDuration(100).start()
                                 }
                             }
 
@@ -150,18 +170,17 @@ class PlayGameFragment : Fragment() {
                 // Create the timer with the total time and callbacks
                 timer = Timer(modelPuzzle.getTime(gameDifficulty), { _ ->
                         val (minutes, seconds) = timer.getTimeRemaining()
-                        timerTextView.text = "%02d:%02d".format(minutes, seconds)
-                    }, { // Timer finished, disable piece dragging here
+                        timerTextView.text = "%02d:%02d".format(minutes, seconds) },
+                    { // Timer finished, disable piece dragging here
                         for (piece in jigsawPieces) {
                             val originalPosition = bitJigsawMap[piece.hashCode()]
                             if (originalPosition != null) {
-                                originalPosition.canDrag = false
-                            }
+                                originalPosition.canDrag = false }
                         }
 
-                    viewModelGameStats.setGamesLost()
-                    viewModelGameStats.setGamesPlayed()
-                    // Change the color of the timer to red
+                        viewModelGameStats.setGamesPlayed(1)
+                        viewModelGameStats.setGamesLost(1)
+                        // Change the color of the timer to red
                     timerTextView.setTextColor(Color.RED)
                     // Animate the win/loss image
                     winLoss.setImageResource(R.drawable.ranout)
@@ -176,6 +195,7 @@ class PlayGameFragment : Fragment() {
         }
         return view
     }
+
 
     // Function to check if the puzzle is solved
     private fun checkIfSolved(): Boolean {
@@ -195,12 +215,18 @@ class PlayGameFragment : Fragment() {
     private fun animateWinLossImage(image: ImageView) {
         // Bring the image to the front
         image.bringToFront()
-        val animator = ObjectAnimator.ofFloat(image, "alpha", 0f, 1f)
-        animator.duration = 5000
-        animator.start()
+
+        val animatorSet = AnimatorSet()
+        val animatorZoomIn = ObjectAnimator.ofFloat(image, "scaleX", 0f, 1f)
+        val animatorZoomOut = ObjectAnimator.ofFloat(image, "scaleX", 1f, 0f)
+        val animatorShake = ObjectAnimator.ofFloat(image, "translationX", 0f, 50f, 0f, -50f, 0f)
+        animatorSet.play(animatorZoomIn).with(animatorZoomOut).with(animatorShake)
+        animatorSet.duration = 3000
+        animatorSet.start()
+
 
         // Slowly fade out the image at the end of the animation
-        animator.addListener(object : Animator.AnimatorListener {
+        animatorSet.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator) {
                 TODO("Not yet implemented")
             }

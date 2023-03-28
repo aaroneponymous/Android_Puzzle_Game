@@ -24,6 +24,10 @@ class Timer(private val totalTime: Long, val onTimerTick: (Long) -> Unit, val on
         timer?.cancel()
     }
 
+    fun getTimeLeft(): Long {
+        return timeLeft
+    }
+
     fun getTimeRemaining(): Pair<Long, Long> {
         val minutes = timeLeft / 1000 / 60
         val seconds = timeLeft / 1000 % 60

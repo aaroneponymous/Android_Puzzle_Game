@@ -28,8 +28,8 @@ class Jigsaw (imageView: ImageView, gameMode: String) {
     // Implement a function that returns time in milliseconds for the game
     fun getTime(difficulty: String): Long {
         return when (difficulty) {
-            "easy" -> 1 * 60 * 1000L // 4 minutes
-            "medium" -> 1 * 60 * 1000L // 3 minutes
+            "easy" -> 3 * 60 * 1000L // 4 minutes
+            "medium" -> 1 * 1 * 1000L // 3 minutes
             else -> 1 * 60 * 1000L // 2 minutes
         }
     }
@@ -44,6 +44,7 @@ class Jigsaw (imageView: ImageView, gameMode: String) {
 
 
         val pieces: ArrayList<Bitmap> = ArrayList(piecesNumber)
+
 
         // Get the scaled bitmap of the source image
         val drawable = imageChosen.drawable as BitmapDrawable
@@ -69,6 +70,7 @@ class Jigsaw (imageView: ImageView, gameMode: String) {
         val pieceHeight = croppedImageHeight/ rows
         // create a Map of the Bitmaps and their Positions
         val bitImageMap = mutableMapOf<Int, PiecesData>()
+        val bitImageMapSimple = mutableMapOf<Int, PiecesData>()
 
         // Create each bitmap piece and add it to the resulting array
         var yCoord = 0
@@ -219,6 +221,7 @@ class Jigsaw (imageView: ImageView, gameMode: String) {
                 // Create a PiecesData Object to store the position and size of the pieces
                 val piecesData = PiecesData(xBoundedCoord, yBoundedCoord, pieceWidthOffSet, pieceHeightOffSet)
                 bitImageMap[jigsawPieceMaker.hashCode()] = piecesData
+
                 pieces.add(jigsawPieceMaker)
                 xCoord += pieceWidth
             }
@@ -231,8 +234,8 @@ class Jigsaw (imageView: ImageView, gameMode: String) {
 
     // Calculate the scaled Dimensions and Positions of the Pieces
     private fun getBitPosInImageView(imageView: ImageView?): IntArray? {
-        val ret = IntArray(4)
-        if (imageView == null || imageView.drawable == null) return ret
+        val rectangle = IntArray(4)
+        if (imageView == null || imageView.drawable == null) return rectangle
 
         // Get image dimensions
         // Get image matrix values and place them in an array
@@ -248,20 +251,20 @@ class Jigsaw (imageView: ImageView, gameMode: String) {
         val origW = d.intrinsicWidth
         val origH = d.intrinsicHeight
 
-        // Calculate the actual dimensions
-        val actW = (origW * scaleX).roundToInt()
-        val actH = (origH * scaleY).roundToInt()
-        ret[2] = actW
-        ret[3] = actH
+        // Calculate the actualual dimensions
+        val actualW = (origW * scaleX).roundToInt()
+        val actualH = (origH * scaleY).roundToInt()
+        rectangle[2] = actualW
+        rectangle[3] = actualH
 
         // Get image position
         // We assume that the image is centered into ImageView
         val imgViewW = imageView.width
         val imgViewH = imageView.height
-        val top = (imgViewH - actH) / 2
-        val left = (imgViewW - actW) / 2
-        ret[0] = left
-        ret[1] = top
-        return ret
+        val top = (imgViewH - actualH) / 2
+        val left = (imgViewW - actualW) / 2
+        rectangle[0] = left
+        rectangle[1] = top
+        return rectangle
     }
 }

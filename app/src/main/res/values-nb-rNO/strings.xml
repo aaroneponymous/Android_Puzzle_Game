@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jigsaw</string>
+    <!-- Translate all of the following strings to Norwegian Bokmål -->
+    <string name="configuration_title">Konfigurasjon</string>
+    <string name="difficult_level">Velg vanskelighetsgrad:</string>
+    <string name="choose_image">Spill spillet ved å trykke på et bilde:</string>
+    <string name="easy">ENKEL</string>
+    <string name="medium">MEDIUM</string>
+    <string name="hard">VANSKELIG</string>
+    <string name="time_remaining">Tid igjen:</string>
+    <string name="new_game">NYTT SPILL</string>
+    <string name="change_config">KONFIGURASJON</string>
+    <string name="settings_title">Innstillinger</string>
+    <string name="music_settings">Musikk På/Av</string>
+    <string name="music_on">På</string>
+    <string name="music_off">Av</string>
+    <string name="font_settings">Skrifttype</string>
+    <string name="large_font">Stor</string>
+    <string name="small_font">Liten</string>
+    <string name="stats_title">Statistikk</string>
+    <string name="quickest_time">Raskeste tid</string>
+    <string name="games_played">Spill spilt</string>
+    <string name="games_won">Spill vunnet</string>
+    <string name="games_loss">Spill tapt</string>
+    <string name="reset">Nullstill</string>
+    <string name="none">Ingen</string>
+    <string name="zero">0</string>
+</resources>
+    

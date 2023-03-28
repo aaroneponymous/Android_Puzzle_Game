@@ -13,38 +13,48 @@ class PlayGameViewModel : ViewModel() {
     private val _gamesPlayed = MutableLiveData<Int>()
     val gamesPlayed: LiveData<Int> = _gamesPlayed
 
+
     private val _gamesWon = MutableLiveData<Int>()
     val gamesWon: LiveData<Int> = _gamesWon
 
     private val _gamesLost = MutableLiveData<Int>()
     val gamesLost: LiveData<Int> = _gamesLost
 
-    private val _quicktimePlayed = MutableLiveData<Pair<Long, Long>>()
-    val quicktimePlayed: MutableLiveData<Pair<Long, Long>> = _quicktimePlayed
+    private val _quicktimePlayed = MutableLiveData<Long>()
+    val quicktimePlayed: LiveData<Long> = _quicktimePlayed
 
    // Functions
 
-    fun setGamesPlayed() {
-        _gamesPlayed.value = _gamesPlayed.value?.plus(1)
+    fun setGamesPlayed(int : Int) {
+        _gamesPlayed.value = int
     }
 
-    fun setGamesWon() {
-        _gamesWon.value = _gamesWon.value?.plus(1)
+    fun setGamesWon(int: Int) {
+        _gamesWon.value = int
     }
 
-    fun setGamesLost() {
-        _gamesLost.value = _gamesLost.value?.plus(1)
+    fun setGamesLost(int: Int) {
+        _gamesLost.value = int
     }
 
-    // Function that takes in a parameter of Pair<Long, Long> and adds it to the list of pairs
-    fun setQuicktimePlayed(time: Pair<Long, Long>) {
-        _quicktimePlayed.value = time
+    fun setQuicktimePlayed(timePlayed: Long) {
+        // Make sure if the value is null, set it to the time played
+        if (_quicktimePlayed.value == null) {
+            _quicktimePlayed.value = timePlayed
+        } else if (timePlayed < _quicktimePlayed.value!!) {
+            _quicktimePlayed.value = timePlayed
+        }
     }
 
-    // Function that returns the fastest time played
-    // Return the lowest pair value, which is the time played
-    fun getFastestTime(): Long {
-        return _quicktimePlayed.value?.first ?: 0
+
+
+    // Function to reset all the values
+    fun reset() {
+        _gamesPlayed.value = 0
+        _gamesWon.value = 0
+        _gamesLost.value = 0
+        // Set the quicktime to max long value
+        _quicktimePlayed.value = Long.MAX_VALUE
     }
 
 
